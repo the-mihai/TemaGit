@@ -1,0 +1,69 @@
+#==============================================================================
+#COMMANDS INSIDE local branch (master or not)
+#==============================================================================
+git status
+# add / modify file(s) (changes on local working set)
+git status
+
+# add file(s) to staging area (files to be used in the next commit)
+git status
+git add . / git add * / git add <file_name1> <file_name2>
+git status
+
+# commit changes (files will be added to local git repository/database)
+git status
+git commit
+git commit -m "Self explaining summary commit"
+git status
+
+#to see what you’ve changed but not yet staged
+git diff
+#If you want to see what you’ve staged that will go into your next commit
+git diff --staged / --cached
+
+
+#unstaging a staged file - the file keeps the changes, but removed from stage
+git reset HEAD <file_name>
+
+#unmodify a file (dropping the local changes)
+git checkout -- <file_name>
+
+
+#==============================================================================
+#COMMANDS between local branches
+#==============================================================================
+(master) git branch -a
+(master) git branch feature_branch
+(master) git checkout feature_branch
+
+(feature_branch) # do changes
+(feature_branch) git status # before changing again the branch make sure the working dir is clean (all changes commited)
+
+#======================
+#Add local branch changes to local master branch then push
+#======================
+(feature_branch) git status # before changing the branch make sure the working dir is clean (all changes commited)
+(feature_branch) git checkout master
+(master) git pull
+(master) git checkout feature_branch
+(feature_branch) git rebase master # resolve possible conflicts
+(feature_branch) git checkout master
+(master) git merge --no-ff feature_branch
+(master) git push
+
+#==============================================================================
+# push local branch to remote / get remote branches local
+#==============================================================================
+(master) git checkout -b local_branch_1 master # create local branch starting from master
+(local_branch_1) #do changes (and commit)
+(local_branch_1) git push origin local_branch_1
+(local_branch_1) git checkout -b local_subbranch_1 local_branch_1 # create local branch starting from another local branch
+(local_subbranch_1) # do changes (and commit)
+(local_subbranch_1) git push origin local_subbranch_1
+
+#on other user
+(master} git fetch --all
+(master) git branch -a
+(master) git checkout -b user_local_branch remote_branch # create local branch starting from existing remote branch
+(user_local_branch) #do changes (and commit)
+(user_local_branch) git push origin user_local_branch
